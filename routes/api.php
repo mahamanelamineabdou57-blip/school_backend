@@ -1,19 +1,68 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\{
+    FaculteController,
+    DepartementController,
+    SectionController,
+    EtudiantController,
+    EnseignantController,
+    ModuleController,
+    SectionModuleController,
+    InscriptionController,
+    NoteController,
+    TraceMessageController,
+    FeeController,
+    StudentFeeController
+};
+use App\Http\Controllers\AcademicYearController;
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// 🔹 Auth routes (ex: login, register) - à sécuriser avec Sanctum
+Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-Route::middleware('auth:sanctum')->get('/profile', function (Request $request) {
-    return $request->user();
-});
+// 🔹 Routes protégées par Sanctum
+// Route::middleware('auth:sanctum')->group(function () {
+
+    // Faculte
+    Route::apiResource('facultes', FaculteController::class);
+
+    // Departement
+    Route::apiResource('departements', DepartementController::class);
+
+    // Section
+    Route::apiResource('sections', SectionController::class);
+
+    // Etudiant
+    Route::apiResource('etudiants', EtudiantController::class);
+
+    // Enseignant
+    Route::apiResource('enseignants', EnseignantController::class);
+
+    // Module
+    Route::apiResource('modules', ModuleController::class);
+
+    // SectionModule
+    Route::apiResource('section-modules', SectionModuleController::class);
+
+    // Inscription
+    Route::apiResource('inscriptions', InscriptionController::class);
+
+    // Note
+    Route::apiResource('notes', NoteController::class);
+
+    // AcademicYear
+    // Route::apiResource('academic-years', AcademicYearController::class);
+
+    // // TraceMessage
+    // Route::apiResource('trace-messages', TraceMessageController::class);
+
+    // Fee
+    Route::apiResource('fees', FeeController::class);
+
+    // StudentFee
+    Route::apiResource('student-fees', StudentFeeController::class);
+
+    // Logout
+    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+// });

@@ -2,41 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Faculte;
+use App\Models\Fee;
 use Illuminate\Http\Request;
 
-class FaculteController extends Controller
+class FeeController extends Controller
 {
     public function index()
     {
-        return Faculte::all();
+        return Fee::all();
     }
 
     public function show($id)
     {
-        return Faculte::with('departements')->findOrFail($id);
+        return Fee::findOrFail($id);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'name' => 'required|string|max:255',
+            'amount' => 'required|numeric|min:0',
+            'description' => 'nullable|string',
         ]);
 
-        return Faculte::create($request->all());
+        return Fee::create($request->all());
     }
 
     public function update(Request $request, $id)
     {
-        $faculte = Faculte::findOrFail($id);
-        $faculte->update($request->all());
-        return $faculte;
+        $fee = Fee::findOrFail($id);
+        $fee->update($request->all());
+        return $fee;
     }
 
     public function destroy($id)
     {
-        $faculte = Faculte::findOrFail($id);
-        $faculte->delete();
+        $fee = Fee::findOrFail($id);
+        $fee->delete();
         return response()->noContent();
     }
 }
