@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class UniteEnseignement extends Model
 {
-     protected $fillable = [
+    protected $fillable = [
         'name',
         'code',
         'credits',
@@ -22,6 +22,6 @@ class UniteEnseignement extends Model
 
     public function section()
     {
-        
+        return $this->belongsTo(Section::class);
     }
 }
