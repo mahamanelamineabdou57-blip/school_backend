@@ -15,6 +15,10 @@ return new class extends Migration
             $table->id();
             $table->string('name');   // ex: Algorithmique
             $table->string('code')->unique(); // ex: INFO101
+            //  'unite_id'
+            $table->foreignId('unite_enseignement_id')
+            ->constrained('unite_enseignements')
+            ->cascadeOnDelete();
 
             $table->foreignId('section_module_id')
                 ->constrained('sections')

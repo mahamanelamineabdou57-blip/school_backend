@@ -45,4 +45,8 @@ class Section extends Model
     {
         return $this->hasMany(Etudiant::class);
     }
+   public function unite_enseignements()
+    {
+        return $this->hasMany(UniteEnseignement::class);
+    }
 }

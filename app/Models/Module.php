@@ -16,6 +16,7 @@ class Module extends Model
         'enseignant_id',
         'credits',
         'volume_horaire',
+        'unite_id'
     ];
 
     /* ---------------- Relations ---------------- */
@@ -42,5 +43,9 @@ class Module extends Model
     public function notes()
     {
         return $this->hasMany(Note::class);
+    }
+    public function unite_enseignements()
+    {
+        return $this->belongsTo(UniteEnseignement::class);
     }
 }
