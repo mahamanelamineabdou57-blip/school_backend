@@ -13,7 +13,8 @@ use App\Http\Controllers\{
     NoteController,
     TraceMessageController,
     FeeController,
-    StudentFeeController
+    StudentFeeController,
+    UniteEnseignementController
 };
 use App\Http\Controllers\AcademicYearController;
 
@@ -49,6 +50,7 @@ Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
     Route::apiResource('fees', FeeController::class);
     // StudentFee
     Route::apiResource('student-fees', StudentFeeController::class);
+    Route::apiResource('unite-enseignements', UniteEnseignementController::class);
     // Logout
     Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 // });

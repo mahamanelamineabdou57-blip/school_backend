@@ -9,7 +9,7 @@ use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
 {
-    // 🔹 Register
+    //  Register(creation de compte)
     public function register(Request $request)
     {
         $request->validate([
@@ -32,7 +32,7 @@ class AuthController extends Controller
         ], 201);
     }
 
-    // 🔹 Login
+    // Login (authentification)
     public function login(Request $request)
     {
         $request->validate([
@@ -67,9 +67,4 @@ class AuthController extends Controller
         ]);
     }
 
-    // 🔹 Optionnel : Profil actuel
-    public function me(Request $request)
-    {
-        return response()->json($request->user());
-    }
 }
