@@ -7,9 +7,10 @@ use Illuminate\Http\Request;
 
 class FaculteController extends Controller
 {
-    public function index()
+    public function index() 
     {
-        return Faculte::all();
+         return response()->json(Faculte::all());
+         
     }
 
     public function show($id)
@@ -20,8 +21,10 @@ class FaculteController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
+            'logo' => 'nullable|image|max:2048',
         ]);
+
 
         return Faculte::create($request->all());
     }

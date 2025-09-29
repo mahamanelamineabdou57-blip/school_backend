@@ -19,6 +19,7 @@ return new class extends Migration
             $table->date('inscription_date');
             $table->string('status')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

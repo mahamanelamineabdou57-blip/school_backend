@@ -10,21 +10,22 @@ class DepartementController extends Controller
     public function index()
     {
         // return Departement::with('faculte', 'sections', 'enseignants')->get();
-         return Departement::with('faculte', 'sections')->get();
+         return response()->json(Departement::with('facultes', 'sections')->get());
     }
 
     public function show($id)
     {
-        return Departement::with('faculte', 'sections', 'enseignants')->findOrFail($id);
+        return Departement::with('facultes', 'sections')->findOrFail($id);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'faculte_id' => 'required|exists:facultes,id',
+            'nom' => 'required|string|max:255',
+            'faculte_id' => 'required',
+            'code'=>'nullable|string|max:255',
         ]);
-
+ 
         return Departement::create($request->all());
     }
 

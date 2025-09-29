@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('academic_years', function (Blueprint $table) {
             $table->id();
-            $table->string('year', 9)->unique(); // ex. 2024-2025
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
+            $table->string('nom', 9)->unique(); // ex. 2024-2025
+            $table->boolean('actif');
+            $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

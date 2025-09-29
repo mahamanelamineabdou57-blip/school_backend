@@ -18,6 +18,7 @@ return new class extends Migration
                   ->constrained('departements')
                   ->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

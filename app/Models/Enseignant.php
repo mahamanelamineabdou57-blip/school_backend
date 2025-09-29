@@ -45,4 +45,9 @@ class Enseignant extends Model
     {
         return $this->hasMany(Module::class);
     }
+     public function doyen()
+    {
+        // 'doyen' est le nom de la colonne dans ta table facultes qui contient l'ID du doyen
+        return $this->belongsTo(Enseignant::class, 'doyen'); 
+    }
 }

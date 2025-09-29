@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('facultes', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 150); // Nom de la faculté
+            $table->string('nom', 150); // Nom de la faculté
+            $table->string('logo')->nullable(); 
             $table->timestamps();
+            $table->softDeletes();
+            //  $table->datetime('delete_at')->nullable();
         });
     }
 

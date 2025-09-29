@@ -17,6 +17,7 @@ return new class extends Migration
             $table->decimal('amount', 10, 2); // montant en CFA ou autre
             $table->text('description')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

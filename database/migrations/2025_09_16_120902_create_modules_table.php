@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('modules', function (Blueprint $table) {
             $table->id();
-            $table->string('name');   // ex: Algorithmique
+            $table->string('nom');   // ex: Algorithmique
             $table->string('code')->unique(); // ex: INFO101
             //  'unite_id'
             $table->foreignId('unite_enseignement_id')
@@ -32,6 +32,7 @@ return new class extends Migration
             $table->integer('volume_horaire')->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

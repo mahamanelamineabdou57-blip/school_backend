@@ -14,43 +14,51 @@ use App\Http\Controllers\{
     TraceMessageController,
     FeeController,
     StudentFeeController,
-    UniteEnseignementController
+    UniteEnseignementController,
+    AcademicYearController,
+    FormationController,
+    RoleController
 };
-use App\Http\Controllers\AcademicYearController;
+// use App\Http\Controllers\AcademicYearController;
+use Illuminate\Http\Request;
 
 // Auth routes (ex: login, register) - à sécuriser avec Sanctum
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 
+
 // Routes protégées par Sanctum
 // Route::middleware('auth:sanctum')->group(function () {
-    // Faculte
-    Route::apiResource('facultes', FaculteController::class);
-    // Departement
-    Route::apiResource('departements', DepartementController::class);
-    // Section
-    Route::apiResource('sections', SectionController::class);
-    // Etudiant
-    Route::apiResource('etudiants', EtudiantController::class);
-    // Enseignant
-    Route::apiResource('enseignants', EnseignantController::class);
-    // Module
-    Route::apiResource('modules', ModuleController::class);
-    // SectionModule
-    Route::apiResource('section-modules', SectionModuleController::class);
-    // Inscription
-    Route::apiResource('inscriptions', InscriptionController::class);
-    // Note
-    Route::apiResource('notes', NoteController::class);
-    // AcademicYear
-    // Route::apiResource('academic-years', AcademicYearController::class);
-    // // TraceMessage
-    // Route::apiResource('trace-messages', TraceMessageController::class);
-    // Fee
-    Route::apiResource('fees', FeeController::class);
-    // StudentFee
-    Route::apiResource('student-fees', StudentFeeController::class);
-    Route::apiResource('unite-enseignements', UniteEnseignementController::class);
-    // Logout
-    Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
+// Faculte
+Route::apiResource('facultes', FaculteController::class);
+// Route::put('facultes/{'),
+// Departement
+Route::apiResource('departements', DepartementController::class);
+Route::apiResource('formations', FormationController::class);
+Route::apiResource('formations', RoleController::class);
+// Section
+Route::apiResource('sections', SectionController::class);
+// Etudiant
+Route::apiResource('etudiants', EtudiantController::class);
+// Enseignant
+Route::apiResource('enseignants', EnseignantController::class);
+// Module
+Route::apiResource('modules', ModuleController::class);
+// SectionModule
+Route::apiResource('section-modules', SectionModuleController::class);
+// Inscription
+Route::apiResource('inscriptions', InscriptionController::class);
+// Note
+Route::apiResource('notes', NoteController::class);
+// AcademicYear
+Route::apiResource('academic-years', AcademicYearController::class);
+// // TraceMessage
+// Route::apiResource('trace-messages', TraceMessageController::class);
+// Fee
+Route::apiResource('fees', FeeController::class);
+// StudentFee
+Route::apiResource('student-fees', StudentFeeController::class);
+Route::apiResource('unite-enseignements', UniteEnseignementController::class);
+// Logout
+Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 // });

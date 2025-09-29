@@ -11,22 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('section_modules', function (Blueprint $table) {
+        Schema::create('formations', function (Blueprint $table) {
             $table->id();
-
-            $table->foreignId('section_id')
-                ->constrained('sections')
+            $table->string('nom');
+            $table->string('code');
+            $table->integer('duree');
+            $table->text('conditions');
+            $table->foreignId('departement_id')
+                ->constrained('departements')
                 ->cascadeOnDelete();
-
-            $table->foreignId('module_id')
-                ->constrained('modules')
-                ->cascadeOnDelete();
-
             $table->timestamps();
             $table->softDeletes();
-
-            // Assurer l'unicité de la combinaison section-module
-            $table->unique(['section_id', 'module_id']);
         });
     }
 
@@ -35,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('section_modules');
+        Schema::dropIfExists('formations');
     }
 };

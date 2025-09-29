@@ -10,14 +10,16 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
+    { 
         Schema::create('departements', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ex. Informatique
+            $table->string('nom'); // ex. Informatique
+            $table->string('code')->nullable();
             $table->foreignId('faculte_id')
                 ->constrained()      // clé étrangère vers la table facultes
                 ->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

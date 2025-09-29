@@ -25,3 +25,4 @@ class UniteEnseignement extends Model
         return $this->belongsTo(Section::class);
     }
 }
+ 

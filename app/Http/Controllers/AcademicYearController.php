@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
+// use App\Http\Controllers\Controller;
 use App\Models\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
-class AcademicYearsController extends Controller
+class AcademicYearController extends Controller
 {
     /**
      * Display a listing of the academic years.
@@ -37,9 +37,9 @@ class AcademicYearsController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'year' => 'required|integer|unique:academic_years,year',
-            'start_date' => 'required|date',
-            'end_date' => 'required|date|after:start_date',
+            'nom' => 'required|string|max:10',
+            'actif' => 'required|bool',
+            'description' => 'required|nullable',
         ]);
 
         if ($validator->fails()) {
@@ -60,10 +60,10 @@ class AcademicYearsController extends Controller
             $academicYear = AcademicYear::findOrFail($id);
 
             $validator = Validator::make($request->all(), [
-                'year' => 'required|integer|unique:academic_years,year,' . $id,
-                'start_date' => 'required|date',
-                'end_date' => 'required|date|after:start_date',
-            ]);
+            'nom' => 'required|string|max:10|unique:academic_years,nom,' . $id,
+            'actif' => 'required|bool',
+            'description' => 'required|nullable',
+        ]);
 
             if ($validator->fails()) {
                 return response()->json($validator->errors(), 400);

@@ -22,6 +22,7 @@ return new class extends Migration
             $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

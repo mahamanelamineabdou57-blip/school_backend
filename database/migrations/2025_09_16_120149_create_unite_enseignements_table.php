@@ -19,6 +19,7 @@ return new class extends Migration
             $table->integer('credits');
             $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

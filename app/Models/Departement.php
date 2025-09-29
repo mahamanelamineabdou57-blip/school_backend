@@ -13,14 +13,15 @@ class Departement extends Model
      * Colonnes autorisées en mass assignment
      */
     protected $fillable = [
-        'name',
+        'nom',
         'faculte_id',
+        'code',
     ];
 
     /* ---------------- Relations ---------------- */
 
     // Un département appartient à une faculté
-    public function faculte()
+    public function facultes() 
     {
         return $this->belongsTo(Faculte::class);
     }

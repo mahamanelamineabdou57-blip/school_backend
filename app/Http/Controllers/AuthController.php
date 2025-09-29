@@ -13,18 +13,25 @@ class AuthController extends Controller
     public function register(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'matricule' => 'string|max:25|unique',
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
+            'telephone' => 'required|telephone|unique:users,telephone',
             'password' => 'required|string|min:6|confirmed', // password_confirmation
+
         ]);
 
         $user = User::create([
+            'matricule'=> $request->matricule,
             'name' => $request->name,
+            'prenom'=> $request->prenom,
             'email' => $request->email,
+            'telephone'=> $request->telephone,
             'password' => Hash::make($request->password),
         ]);
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
             'user' => $user,
@@ -48,7 +55,7 @@ class AuthController extends Controller
             ]);
         }
 
-        $token = $user->createToken('api-token')->plainTextToken;
+        $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
             'user' => $user,
@@ -66,5 +73,4 @@ class AuthController extends Controller
             'message' => 'Déconnexion réussie.'
         ]);
     }
-
 }

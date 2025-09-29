@@ -19,6 +19,7 @@ return new class extends Migration
             $table->enum('status', ['pending', 'paid', 'partial'])->default('pending');
             $table->date('payment_date')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

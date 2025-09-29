@@ -13,18 +13,14 @@ class AcademicYear extends Model
      * Colonnes autorisées au remplissage de masse
      */
     protected $fillable = [
-        'year',
-        'start_date',
-        'end_date',
+        'nom',
+        'actif',
+        'description',
     ];
 
     /**
      * Casts automatiques
      */
-    protected $casts = [
-        'start_date' => 'date',
-        'end_date'   => 'date',
-    ];
 
     /* ---------------- Relations ---------------- */
 

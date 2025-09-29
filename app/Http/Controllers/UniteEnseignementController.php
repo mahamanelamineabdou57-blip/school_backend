@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class UniteEnseignementController extends Controller
 {
     // Lister tous les UE
-    public function index()
+    public function index() 
     {
         $ues = UniteEnseignement::with('sections', 'modules')->get();
         return response()->json($ues);

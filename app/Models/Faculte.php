@@ -12,7 +12,8 @@ class Faculte extends Model
 
     // Champs remplissables en masse
     protected $fillable = [
-        'name',
+        'nom',
+        'logo',
     ];
 
     /**
@@ -21,5 +22,9 @@ class Faculte extends Model
     public function departements()
     {
         return $this->hasMany(Departement::class);
+    }
+    public function doyens()
+    {
+        return $this->belongsTo(Enseignant::class, 'faculte_id');
     }
 }
