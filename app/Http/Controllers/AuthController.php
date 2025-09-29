@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
-{
+{ 
     //  Register(creation de compte)
     public function register(Request $request)
     {

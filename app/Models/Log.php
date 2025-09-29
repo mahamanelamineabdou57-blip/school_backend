@@ -5,17 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Role extends Model
+class Log extends Model
 {
     use HasFactory;
-    protected $table = 'roles';
     protected $fillable = [
-        'nom',
-        'description',
+        'date',
+        'niveau',
+        'message',
+        'utilisateur',
     ];
 
-    public function users()
+
+    public function user()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsTo(User::class);
     }
+
 }

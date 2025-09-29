@@ -17,7 +17,8 @@ use App\Http\Controllers\{
     UniteEnseignementController,
     AcademicYearController,
     FormationController,
-    RoleController
+    RoleController,
+    LogController
 };
 // use App\Http\Controllers\AcademicYearController;
 use Illuminate\Http\Request;
@@ -35,7 +36,6 @@ Route::apiResource('facultes', FaculteController::class);
 // Departement
 Route::apiResource('departements', DepartementController::class);
 Route::apiResource('formations', FormationController::class);
-Route::apiResource('formations', RoleController::class);
 // Section
 Route::apiResource('sections', SectionController::class);
 // Etudiant
@@ -59,6 +59,10 @@ Route::apiResource('fees', FeeController::class);
 // StudentFee
 Route::apiResource('student-fees', StudentFeeController::class);
 Route::apiResource('unite-enseignements', UniteEnseignementController::class);
+// Logs
+Route::apiResource('logs', LogController::class);
+//Roles
+Route::apiResource('roles', RoleController::class);
 // Logout
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 // });
