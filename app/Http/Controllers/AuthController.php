@@ -8,29 +8,30 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 
 class AuthController extends Controller
-{ 
+{
+    public function index()
+    {
+        // return Departement::with('faculte', 'sections', 'enseignants')->get();
+        return response()->json(User::all());
+    }
+
+    public function show($id)
+    {
+        return User::findOrFail($id);
+    }
     //  Register(creation de compte)
-    public function register(Request $request)
+    public function store(Request $request)
     {
         $request->validate([
-            'matricule' => 'string|max:25|unique',
+            'matricule' => 'string|max:25|unique:users',
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
-            'telephone' => 'required|telephone|unique:users,telephone',
+            'telephone' => 'required|unique:users,telephone',
             'password' => 'required|string|min:6|confirmed', // password_confirmation
-
+            'role_id' => 'required',
         ]);
-
-        $user = User::create([
-            'matricule'=> $request->matricule,
-            'name' => $request->name,
-            'prenom'=> $request->prenom,
-            'email' => $request->email,
-            'telephone'=> $request->telephone,
-            'password' => Hash::make($request->password),
-        ]);
-
+        $user = User::create($request->all());
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
@@ -39,6 +40,27 @@ class AuthController extends Controller
         ], 201);
     }
 
+    public function update(Request $request, $id)
+    {
+        $user = User::findOrFail($id);
+        $request->validate([
+            'matricule' => 'string|max:25|unique:users,matricule,' . $user->id,
+            'nom' => 'required|string|max:255',
+            'prenom' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'telephone' => 'required|unique:users,telephone,' . $user->id,
+            'role_id' => 'required',
+        ]);
+        $user->update($request->all());
+        return response()->json($user);
+    }
+
+    public function destroy($id)
+    {
+        $user = User::findOrFail($id);
+        $user->delete();
+        return response()->noContent();
+    }
     // Login (authentification)
     public function login(Request $request)
     {

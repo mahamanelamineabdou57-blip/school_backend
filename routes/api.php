@@ -16,24 +16,35 @@ use App\Http\Controllers\{
     StudentFeeController,
     UniteEnseignementController,
     AcademicYearController,
+    AccesController,
+    AuthController,
     FormationController,
+    IntefaceController,
     RoleController,
     LogController
 };
+use App\Models\Acces;
+use App\Models\Inteface;
 // use App\Http\Controllers\AcademicYearController;
 use Illuminate\Http\Request;
 
 // Auth routes (ex: login, register) - à sécuriser avec Sanctum
 Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::get('/utilisateur/{id}/acces', [\App\Http\Controllers\AccesController::class, 'getUserAccess']);
 
 
 // Routes protégées par Sanctum
 // Route::middleware('auth:sanctum')->group(function () {
 // Faculte
 Route::apiResource('facultes', FaculteController::class);
-// Route::put('facultes/{'),
+//Utilisateurs
+Route::apiResource('utilisateurs', AuthController::class);
+Route::apiResource('securite-access', AccesController::class);
+Route::apiResource('interfaces', IntefaceController::class);
+
 // Departement
+//utilisateur(Roles et Permissions)
 Route::apiResource('departements', DepartementController::class);
 Route::apiResource('formations', FormationController::class);
 // Section
