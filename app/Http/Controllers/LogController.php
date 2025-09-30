@@ -18,7 +18,7 @@ class LogController extends Controller
         if ($log) {
             return response()->json($log, 200);
         } else {
-            return response()->json(['message' => 'Log not found'], 404);
+            return response()->json(['message' => 'Log introuvable'], 404);
         }
     }
     public function store(Request $request)

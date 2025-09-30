@@ -9,12 +9,12 @@ class SectionController extends Controller
 {
     public function index()
     {
-        return Section::with('departement', 'sectionModules', 'inscriptions', 'notes')->get();
+        return Section::with('departement', 'sectionModules', 'inscriptions')->get();
     }
 
     public function show($id)
     {
-        return Section::with('departement', 'sectionModules', 'inscriptions', 'notes')->findOrFail($id);
+        return Section::with('departement', 'sectionModules', 'inscriptions')->findOrFail($id);
     }
 
     public function store(Request $request)
