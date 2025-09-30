@@ -14,10 +14,10 @@ return new class extends Migration
     {
         Schema::create('unite_enseignements', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('nom');
             $table->string('code');
             $table->integer('credits');
-            $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
+            $table->foreignId('formation_id')->constrained('formations')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

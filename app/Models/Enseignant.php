@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Enseignant extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
     /**
      * Champs autorisés au remplissage en masse
      */
@@ -45,9 +48,9 @@ class Enseignant extends Model
     {
         return $this->hasMany(Module::class);
     }
-     public function doyen()
+    public function doyen()
     {
         // 'doyen' est le nom de la colonne dans ta table facultes qui contient l'ID du doyen
-        return $this->belongsTo(Enseignant::class, 'doyen'); 
+        return $this->belongsTo(Enseignant::class, 'doyen');
     }
 }

@@ -4,10 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Inteface extends Model
 {
     use HasFactory;
+       use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     protected $table = 'intefaces';
     protected $fillable = [
         'nom',
@@ -15,7 +19,7 @@ class Inteface extends Model
 
     public function acces()
     {
-        return $this->hasMany(Acces::class);
+        return $this->hasMany(Acces::class, 'inteface_id');
     }
 
     public function roles()

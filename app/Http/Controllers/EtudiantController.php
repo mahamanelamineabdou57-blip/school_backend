@@ -9,26 +9,36 @@ class EtudiantController extends Controller
 {
     public function index()
     {
-        return Etudiant::with('section', 'inscriptions', 'notes', 'user')->get();
+        return response()->json(Etudiant::all());
+        //
+        // return Etudiant::all();
     }
 
     public function show($id)
     {
-        return Etudiant::with('section', 'inscriptions', 'notes', 'user')->findOrFail($id);
+        return response()->json(Etudiant::findOrFail($id));
+        // return Etudiant::findOrFail($id);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'first_name' => 'required|string|max:50',
-            'last_name' => 'required|string|max:50',
-            'email' => 'nullable|email',
-            'date_of_birth' => 'required|date',
-            'phone_number' => 'required|string',
-            'section_id' => 'required|exists:sections,id',
-            'user_id' => 'required|exists:users,id',
-        ]);
-
+        // $request->validate([
+        //    'matricule' => 'required|string|unique:etudiants,matricule',
+        //    'nom' => 'required|string|max:50',
+        //    'prenom' => 'required|string|max:50',
+        //    'email' => 'required|email|unique:etudiants,email',
+        //    'dateNaissance' => 'nullable|date',
+        //    'lieuNaissance' => 'nullable|string|max:255',
+        //    'telephone' => 'required|string|max:20',
+        //    'adresse' => 'nullable|string|max:255',
+        //    'photo' => 'nullable|string|max:255',
+        //    'contact_nom' => 'nullable|string|max:50',
+        //    'contact_prenom' => 'nullable|string|max:50',
+        //    'contact_telephone' => 'nullable|string|max:20',
+        //    'contact_email' => 'nullable|email|max:255',
+        //    'contact_lien' => 'nullable|string|max:100',
+        // ]);
+        // dd($request->all());
         return Etudiant::create($request->all());
     }
 

@@ -4,20 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Inscription extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
     // Table associée (par défaut : "inscriptions")
     protected $table = 'inscriptions';
 
     // Champs remplissables en masse
     protected $fillable = [
         'etudiant_id',
-        'section_id',
-        'inscription_date',
+        'formation_id',
         'status',
+        'semestre_courant',
         'academic_year_id',
     ];
 
@@ -28,18 +31,16 @@ class Inscription extends Model
     // Une inscription appartient à un étudiant
     public function etudiant()
     {
-        return $this->belongsTo(Etudiant::class);
-    }
-
-    // Une inscription appartient à une section
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Etudiant::class, 'etudiant_id');
     }
 
     // Une inscription est liée à une année académique
     public function academicYear()
     {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(AcademicYear::class,'academic_year_id');
+    }
+    public function formation()
+    {
+        return $this->belongsTo(Formation::class, 'formation_id');
     }
 }

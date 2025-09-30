@@ -16,21 +16,10 @@ return new class extends Migration
             $table->string('nom');   // ex: Algorithmique
             $table->string('code')->unique(); // ex: INFO101
             //  'unite_id'
-            $table->foreignId('unite_enseignement_id')
-            ->constrained('unite_enseignements')
-            ->cascadeOnDelete();
-
-            $table->foreignId('section_module_id')
-                ->constrained('sections')
-                ->cascadeOnDelete();
-
-            $table->foreignId('enseignant_id')
-                ->constrained('enseignants')
-                ->cascadeOnDelete();
-
             $table->integer('credits')->default(0);
-            $table->integer('volume_horaire')->default(0);
-
+            $table->foreignId('ue_id')
+                ->constrained('unite_enseignements')
+                ->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });

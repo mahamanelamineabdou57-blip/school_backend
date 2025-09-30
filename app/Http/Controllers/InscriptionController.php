@@ -9,24 +9,25 @@ class InscriptionController extends Controller
 {
     public function index()
     {
-        return Inscription::with('etudiant', 'section', 'academicYear')->get();
+        // return Inscription::with('etudiant', 'formation', 'academicYear')->get();
+        return response()->json(Inscription::all(), 200);
     }
 
     public function show($id)
     {
-        return Inscription::with('etudiant', 'section', 'academicYear')->findOrFail($id);
+        return Inscription::with('etudiant', 'formation', 'academicYear')->findOrFail($id);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'etudiant_id' => 'required|exists:etudiants,id',
-            'section_id' => 'required|exists:sections,id',
-            'inscription_date' => 'required|date',
-            'status' => 'required|string|max:50',
-            'academic_year_id' => 'required|exists:academic_years,id',
-        ]);
-
+        // $request->validate([
+        //     'etudiant_id' => 'required|exists:etudiants,id',
+        //     'formation_id' => 'required|exists:formations,id',
+        //     'semestre_courant' => 'required|integer|min:1',
+        //     'status' => 'required|string|max:50',
+        //     'academic_year_id' => 'required|exists:academic_years,id',
+        // ]);
+        dd($request->all());
         return Inscription::create($request->all());
     }
 

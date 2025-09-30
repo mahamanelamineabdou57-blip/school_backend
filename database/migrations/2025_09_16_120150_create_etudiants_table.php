@@ -13,13 +13,20 @@ return new class extends Migration
     {
         Schema::create('etudiants', function (Blueprint $table) {
             $table->id();
+            $table->string('matricule')->unique();
             $table->string('nom', 50);
             $table->string('prenom', 50);
             $table->string('email')->unique();
-            $table->date('date_of_birth')->nullable();
+            $table->date('dateNaissance')->nullable();
+            $table->string('lieuNaissance')->nullable();
             $table->string('telephone');
-            $table->foreignId('section_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('user_id')->constrained()->cascadeOnDelete();
+            $table->string('adresse')->nullable();
+            $table->string('photo')->nullable();
+            $table->string('contact_nom')->nullable();
+            $table->string('contact_prenom')->nullable();
+            $table->string('contact_telephone')->nullable();
+            $table->string('contact_email')->nullable();
+            $table->string('contact_lien')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

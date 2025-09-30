@@ -50,7 +50,11 @@ class AccesController extends Controller
     {
         // $userAccess = user::with('acces', 'inteface')->find($id);
 
-        $userAccess = Acces::where('utilisateur_id',$id)->get();
-        return $userAccess;
+        // $userAccess = Acces::where('utilisateur_id',$id)->get();
+        // return $userAccess;
+          $userAccess = Acces::with('inteface')
+        ->where('utilisateur_id', $id)
+        ->get();
+        return response()->json($userAccess);
     }
 }

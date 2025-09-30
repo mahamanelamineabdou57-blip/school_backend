@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Str;
 
 class AuthController extends Controller
 {
@@ -23,22 +24,36 @@ class AuthController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'matricule' => 'string|max:25|unique:users',
+            'matricule' => 'nullable|string|max:25|unique:users',
             'nom' => 'required|string|max:255',
             'prenom' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'telephone' => 'required|unique:users,telephone',
-            'password' => 'required|string|min:6|confirmed', // password_confirmation
-            'role_id' => 'required',
+            'role_id' => 'required|exists:roles,id',
         ]);
-        $user = User::create($request->all());
+
+        // Générer mot de passe aléatoire personnalisé
+        $plainPassword = $request->prenom . Str::random(4);
+
+        $user = User::create([
+            'matricule' => $request->matricule,
+            'nom' => $request->nom,
+            'prenom' => $request->prenom,
+            'email' => $request->email,
+            'telephone' => $request->telephone,
+            'password' => Hash::make($plainPassword),
+            'role_id' => $request->role_id,
+        ]);
+
         $token = $user->createToken('token')->plainTextToken;
 
         return response()->json([
             'user' => $user,
-            'token' => $token
+            'token' => $token,
+            'password' => $plainPassword, // ⚠️ pour que l’utilisateur se connecte
         ], 201);
     }
+
 
     public function update(Request $request, $id)
     {

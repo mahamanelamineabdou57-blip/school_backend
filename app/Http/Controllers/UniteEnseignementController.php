@@ -8,9 +8,9 @@ use Illuminate\Http\Request;
 class UniteEnseignementController extends Controller
 {
     // Lister tous les UE
-    public function index() 
+    public function index()
     {
-        $ues = UniteEnseignement::with('sections', 'modules')->get();
+        $ues = UniteEnseignement::with('formation')->get();
         return response()->json($ues);
     }
 
@@ -18,20 +18,19 @@ class UniteEnseignementController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
             'code' => 'required|string|max:50|unique:unite_enseignements,code',
-            'credits' => 'required|integer|min:0',
-            'section_id' => 'required|exists:sections,id',
+            'formation_id' => 'required|exists:formations,id',
         ]);
-
-        $ue = UniteEnseignement::create($validated);
+        // dd($validated);
+        $ue = UniteEnseignement::create($request->all());
         return response()->json($ue, 201);
     }
 
     // Afficher un UE spécifique
     public function show($id)
     {
-        $ue = UniteEnseignement::with('sections', 'modules')->findOrFail($id);
+        $ue = UniteEnseignement::with('formation')->findOrFail($id);
         return response()->json($ue);
     }
 
@@ -41,10 +40,10 @@ class UniteEnseignementController extends Controller
         $ue = UniteEnseignement::findOrFail($id);
 
         $validated = $request->validate([
-            'name' => 'sometimes|required|string|max:255',
-            'code' => 'sometimes|required|string|max:50|unique:unite_enseignements,code,' . $id,
-            'credits' => 'sometimes|required|integer|min:0',
-            'section_id' => 'sometimes|required|exists:sections,id',
+            'nom' => 'required|string|max:255',
+            'code' => 'required|string|max:50|unique:unite_enseignements,code',
+            'credits' => 'required|integer|min:0',
+            'formation_id' => 'required|exists:sections,id',
         ]);
 
         $ue->update($validated);

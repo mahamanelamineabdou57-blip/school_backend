@@ -3,14 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class UniteEnseignement extends Model
 {
+       use SoftDeletes;
+
+    protected $dates = ['deleted_at'];
     protected $fillable = [
-        'name',
+        'nom',
         'code',
         'credits',
-        'section_id'
+        'formation_id',
     ];
 
 
@@ -20,9 +24,8 @@ class UniteEnseignement extends Model
         return $this->hasMany(Module::class);
     }
 
-    public function section()
+    public function formation()
     {
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Formation::class, 'formation_id');
     }
 }
- 

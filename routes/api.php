@@ -29,7 +29,7 @@ use App\Models\Inteface;
 use Illuminate\Http\Request;
 
 // Auth routes (ex: login, register) - à sécuriser avec Sanctum
-Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+// Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
 Route::post('/login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::get('/utilisateur/{id}/acces', [\App\Http\Controllers\AccesController::class, 'getUserAccess']);
 

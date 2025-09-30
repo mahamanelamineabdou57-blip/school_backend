@@ -7,10 +7,9 @@ use Illuminate\Http\Request;
 
 class FaculteController extends Controller
 {
-    public function index() 
+    public function index()
     {
-         return response()->json(Faculte::all());
-         
+        return response()->json(Faculte::all());
     }
 
     public function show($id)

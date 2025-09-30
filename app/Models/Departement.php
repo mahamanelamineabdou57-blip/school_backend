@@ -4,11 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Departement extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
     /**
      * Colonnes autorisées en mass assignment
      */
@@ -21,7 +24,7 @@ class Departement extends Model
     /* ---------------- Relations ---------------- */
 
     // Un département appartient à une faculté
-    public function facultes() 
+    public function facultes()
     {
         return $this->belongsTo(Faculte::class);
     }

@@ -4,29 +4,44 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Etudiant extends Model
 {
     use HasFactory;
+    use SoftDeletes;
 
+    protected $dates = ['deleted_at'];
     /**
      * Colonnes qui peuvent être remplies en masse (mass assignment)
      */
+
     protected $fillable = [
-        'first_name',
-        'last_name',
+        'matricule',
+        'nom',
+        'prenom',
+        'dateNaissance',
+        'lieuNaissance',
         'email',
-        'date_of_birth',
-        'phone_number',
-        'section_id',
-        'user_id',
+        'telephone',
+        'adresse',
+        'photo',
+        'contact_nom',
+        'contact_prenom',
+        'contact_telephone',
+        'contact_email',
+        'contact_lien',
+        // 'createdAt',
+        // 'updatedAt',
+        // 'deletedAt',
+        // 'id',
     ];
 
     /**
      * Casts automatiques
      */
     protected $casts = [
-        'date_of_birth' => 'date',
+        'dateNaissance' => 'date',
     ];
 
     /* ------------------- Relations ------------------- */

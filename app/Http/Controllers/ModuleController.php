@@ -4,35 +4,42 @@ namespace App\Http\Controllers;
 
 use App\Models\Module;
 use Illuminate\Http\Request;
+use PhpParser\Node\Expr\AssignOp\Mod;
 
 class ModuleController extends Controller
 {
     public function index()
     {
-        return Module::with('enseignant', 'section', 'notes', 'inscription')->get();
+        return response()->json(Module::with('unite_enseignements')->get());
     }
 
     public function show($id)
     {
-        return Module::with('enseignant', 'section', 'notes', 'inscription')->findOrFail($id);
+        return response()->json(Module::with('unite_enseignements')->findOrFail($id));
+        //
+        // return Module::with('unite_enseignements')->findOrFail($id);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nom' => 'required|string|max:255',
             'code' => 'required|string|max:50',
-            'section_module_id' => 'required|exists:section_modules,id',
-            'enseignant_id' => 'required|exists:enseignants,id',
             'credits' => 'required|integer',
-            'volume_horaire' => 'required|integer',
+            'ue_id' => 'required|exists:unite_enseignements,id',
         ]);
-
+        // dd($request->all());
         return Module::create($request->all());
     }
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'nom' => 'required|string|max:255',
+            'code' => 'required|string|max:50',
+            'credits' => 'required|integer',
+            'ue_id' => 'required|exists:unite_enseignements,id',
+        ]);
         $module = Module::findOrFail($id);
         $module->update($request->all());
         return $module;
