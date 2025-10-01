@@ -33,7 +33,7 @@ class EtudiantController extends Controller
                 'dateNaissance' => 'nullable|string',
                 'lieuNaissance' => 'nullable|string|max:255',
                 'telephone' => 'required|string|max:20',
-                'adresse' => 'nullable|string|max:255',
+                'adresse' => 'nullable|string|max:255', 
                 'photo' => 'nullable|string',
                 'contact_nom' => 'nullable|string|max:50',
                 'contact_prenom' => 'nullable|string|max:50',

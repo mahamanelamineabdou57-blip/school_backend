@@ -9,13 +9,12 @@ class NoteController extends Controller
 {
     public function index()
     {
-        $note = Note::with('etudiant', 'module', 'section', 'academicYear')->get();
-        return $note;
+        return response()->json(Note::with('inscriptions')->get());
     }
 
     public function show($id)
     {
-        return Note::with('etudiant', 'module', 'section', 'academicYear')->findOrFail($id);
+        return Note::with('inscriptions')->findOrFail($id);
     }
 
     public function store(Request $request)
@@ -47,7 +46,7 @@ class NoteController extends Controller
     // Nouvelle méthode pour le stockage en batch
     public function batchStore(Request $request)
     {
-        $request->validate([
+        $validated = $request->validate([
             '*.noteSessionNormale' => 'nullable|numeric|min:0|max:20',
             '*.noteRattrapage' => 'nullable|numeric|min:0|max:20',
             '*.inscriptionId' => 'required|exists:inscriptions,id',

@@ -31,7 +31,7 @@ class Note extends Model
     {
         return $this->belongsTo(Inscription::class, 'inscriptionId');
     }
-
+ 
     // Note appartient à un module (ECUE)
     public function ecue()
     {

@@ -1,6 +1,6 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Migrations\Migration; 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
+
          Schema::create('fees', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // ex: "Inscription", "Formation"
-            $table->decimal('amount', 10, 2); // montant en CFA ou autre
-            $table->text('description')->nullable();
+            $table->foreignId('inscriptionId')->constrained('inscriptions')->cascadeOnDelete();
+            $table->enum('type', ['inscription', 'formation']);
+            $table->decimal('montant', 10, 2);
+            $table->date('datePaiement')->nullable();
+            $table->enum('statut', ['non payé', 'partiellement payé', 'payé'])->default('non payé');
             $table->timestamps();
             $table->softDeletes();
         });

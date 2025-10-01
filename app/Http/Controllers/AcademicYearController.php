@@ -24,7 +24,7 @@ class AcademicYearController extends Controller
     public function show($id)
     {
         try {
-            $academicYear = AcademicYear::with(['inscriptions', 'notes'])->findOrFail($id);
+            $academicYear = AcademicYear::with(['inscriptions'])->findOrFail($id);
             return response()->json($academicYear);
         } catch (ModelNotFoundException $e) {
             return response()->json(['error' => 'Academic year not found'], 404);

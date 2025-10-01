@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Module extends Model
 {
-    use HasFactory;
+    use HasFactory; 
    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
@@ -26,5 +26,10 @@ class Module extends Model
     public function unite_enseignements()
     {
         return $this->belongsTo(UniteEnseignement::class,'ue_id');
+    }
+    // Module a plusieurs notes
+    public function notes()
+    {
+        return $this->hasMany(Note::class, 'ecueId');
     }
 }

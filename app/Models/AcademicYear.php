@@ -30,8 +30,8 @@ class AcademicYear extends Model
     // Une année académique a plusieurs inscriptions
     public function inscriptions()
     {
-        return $this->hasMany(Inscription::class);
-    }
+        return $this->hasMany(Inscription::class, 'anneeScolaire_id');
+    } 
 
     // Une année académique a plusieurs notes
     public function notes()
