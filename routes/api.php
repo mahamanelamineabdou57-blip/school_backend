@@ -42,7 +42,7 @@ Route::apiResource('facultes', FaculteController::class);
 Route::apiResource('utilisateurs', AuthController::class);
 Route::apiResource('securite-access', AccesController::class);
 Route::apiResource('interfaces', IntefaceController::class);
-
+Route::post('/notes/batch', [NoteController::class, 'batchStore']);  // Ajoutez POST pour le batch
 // Departement
 //utilisateur(Roles et Permissions)
 Route::apiResource('departements', DepartementController::class);

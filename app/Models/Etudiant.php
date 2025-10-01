@@ -11,7 +11,7 @@ class Etudiant extends Model
     use HasFactory;
     use SoftDeletes;
 
-    protected $dates = ['deleted_at'];
+    // protected $dates = ['deleted_at'];
     /**
      * Colonnes qui peuvent être remplies en masse (mass assignment)
      */
@@ -31,19 +31,19 @@ class Etudiant extends Model
         'contact_telephone',
         'contact_email',
         'contact_lien',
-        // 'createdAt',
-        // 'updatedAt',
-        // 'deletedAt',
-        // 'id',
+
     ];
 
     /**
      * Casts automatiques
      */
-    protected $casts = [
-        'dateNaissance' => 'date',
+    // Eloquent gère automatiquement id, created_at, updated_at, deleted_at
+    protected $dates = [
+        'dateNaissance',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
-
     /* ------------------- Relations ------------------- */
 
     // Un étudiant appartient à une section

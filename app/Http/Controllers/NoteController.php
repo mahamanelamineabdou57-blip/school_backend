@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
- 
+
 use App\Models\Note;
 use Illuminate\Http\Request;
 
@@ -9,7 +9,7 @@ class NoteController extends Controller
 {
     public function index()
     {
-        $note =Note::with('etudiant', 'module', 'section', 'academicYear')->get();
+        $note = Note::with('etudiant', 'module', 'section', 'academicYear')->get();
         return $note;
     }
 
@@ -44,4 +44,20 @@ class NoteController extends Controller
         $note->delete();
         return response()->noContent();
     }
-}
+    // Nouvelle méthode pour le stockage en batch
+    public function batchStore(Request $request)
+    {
+        $request->validate([
+            '*.noteSessionNormale' => 'nullable|numeric|min:0|max:20',
+            '*.noteRattrapage' => 'nullable|numeric|min:0|max:20',
+            '*.inscriptionId' => 'required|exists:inscriptions,id',
+            '*.ecueId' => 'required|exists:modules,id',
+        ]);
+        $notes = [];
+        foreach ($request->all() as $noteData) {
+            $notes[] = Note::create($noteData);
+        }
+        return response()->json($notes, 201);
+    }
+}       
+// }

@@ -9,45 +9,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Note extends Model
 {
     use HasFactory;
-   use SoftDeletes;
+    use SoftDeletes;
 
     protected $dates = ['deleted_at'];
     protected $fillable = [
-        'valeur',
-        'etudiant_id',
-        'module_id',
-        'section_id',
-        'academic_year_id',
+        'noteSessionNormale',
+        'noteRattrapage',
+        'inscriptionId',
+        'ecueId',
     ];
 
     protected $casts = [
-        'valeur' => 'decimal:2',
+        'noteSessionNormale' => 'decimal:2',
+        'noteRattrapage' => 'decimal:2',
     ];
 
     /* ---------------- Relations ---------------- */
 
     // Note appartient à un étudiant
-    public function etudiant()
+    public function inscriptions()
     {
-        return $this->belongsTo(Etudiant::class);
+        return $this->belongsTo(Inscription::class, 'inscriptionId');
     }
 
-    // Note appartient à un module
-    public function module()
+    // Note appartient à un module (ECUE)
+    public function ecue()
     {
-        return $this->belongsTo(Module::class);
-    }
-
-    // Note appartient à une section
-    public function section()
-    {
-        return $this->belongsTo(Section::class);
-    }
-
-    // Note appartient à une année académique
-    public function academicYear()
-    {
-        return $this->belongsTo(AcademicYear::class);
+        return $this->belongsTo(Module::class, 'ecueId');
     }
 }
- 

@@ -21,7 +21,7 @@ class Inscription extends Model
         'formation_id',
         'status',
         'semestre_courant',
-        'academic_year_id',
+        'anneeScolaire_id',
     ];
 
     /**
@@ -37,7 +37,7 @@ class Inscription extends Model
     // Une inscription est liée à une année académique
     public function academicYear()
     {
-        return $this->belongsTo(AcademicYear::class,'academic_year_id');
+        return $this->belongsTo(AcademicYear::class, 'anneeScolaire_id');
     }
     public function formation()
     {

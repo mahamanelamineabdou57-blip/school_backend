@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Etudiant;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Log;
 
 class EtudiantController extends Controller
 {
@@ -22,25 +24,34 @@ class EtudiantController extends Controller
 
     public function store(Request $request)
     {
-        // $request->validate([
-        //    'matricule' => 'required|string|unique:etudiants,matricule',
-        //    'nom' => 'required|string|max:50',
-        //    'prenom' => 'required|string|max:50',
-        //    'email' => 'required|email|unique:etudiants,email',
-        //    'dateNaissance' => 'nullable|date',
-        //    'lieuNaissance' => 'nullable|string|max:255',
-        //    'telephone' => 'required|string|max:20',
-        //    'adresse' => 'nullable|string|max:255',
-        //    'photo' => 'nullable|string|max:255',
-        //    'contact_nom' => 'nullable|string|max:50',
-        //    'contact_prenom' => 'nullable|string|max:50',
-        //    'contact_telephone' => 'nullable|string|max:20',
-        //    'contact_email' => 'nullable|email|max:255',
-        //    'contact_lien' => 'nullable|string|max:100',
-        // ]);
-        // dd($request->all());
-        return Etudiant::create($request->all());
+        try {
+            $validated = $request->validate([
+                'matricule' => 'required|string|unique:etudiants,matricule',
+                'nom' => 'required|string|max:50',
+                'prenom' => 'required|string|max:50',
+                'email' => 'nullable|email|unique:etudiants,email',
+                'dateNaissance' => 'nullable|string',
+                'lieuNaissance' => 'nullable|string|max:255',
+                'telephone' => 'required|string|max:20',
+                'adresse' => 'nullable|string|max:255',
+                'photo' => 'nullable|string',
+                'contact_nom' => 'nullable|string|max:50',
+                'contact_prenom' => 'nullable|string|max:50',
+                'contact_telephone' => 'nullable|string|max:20',
+                'contact_email' => 'nullable|email|max:255',
+                'contact_lien' => 'nullable|string|max:100',
+            ]);
+            $etudiant = Etudiant::create($validated);
+            return response()->json([
+                'message' => 'Étudiant créé avec succès',
+                'data' => $etudiant
+            ], 201);
+        } catch (\Exception $e) {
+            Log::error('Erreur Create Etudiant: ' . $e);
+            return response()->json(['error' => 'Validation échouée'], 500);
+        }
     }
+    // public function store(Request $request)
 
     public function update(Request $request, $id)
     {

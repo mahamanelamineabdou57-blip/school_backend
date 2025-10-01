@@ -14,13 +14,10 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
 
-            $table->decimal('valeur', 5, 2); // Note entre 0 et 20
-
-            $table->foreignId('etudiant_id')->constrained('etudiants')->cascadeOnDelete();
-            $table->foreignId('module_id')->constrained('modules')->cascadeOnDelete();
-            $table->foreignId('section_id')->constrained('sections')->cascadeOnDelete();
-            $table->foreignId('academic_year_id')->constrained('academic_years')->cascadeOnDelete();
-
+            $table->decimal('noteSessionNormale', 5, 2)->nullable(); // Note entre 0 et 
+            $table->decimal('noteRattrapage', 5, 2)->nullable(); // Note entre 0 et 20
+            $table->foreignId('inscriptionId')->constrained('inscriptions')->cascadeOnDelete();
+            $table->foreignId('ecueId')->constrained('modules')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
