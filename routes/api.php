@@ -21,12 +21,12 @@ use App\Http\Controllers\{
     FormationController,
     IntefaceController,
     RoleController,
-    LogController
+    LogController,
 };
-use App\Models\Acces;
-use App\Models\Inteface;
-// use App\Http\Controllers\AcademicYearController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\CarteEtudiantController;
+
+Route::apiResource('cartes-etudiants', CarteEtudiantController::class);
+
 
 // Auth routes (ex: login, register) - à sécuriser avec Sanctum
 // Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
@@ -67,6 +67,7 @@ Route::apiResource('academic-years', AcademicYearController::class);
 // Route::apiResource('trace-messages', TraceMessageController::class);
 // Fee
 Route::apiResource('fees', FeeController::class);
+// Route::apiResource('cartes', CarteEtudiantController::class);
 // StudentFee
 Route::apiResource('student-fees', StudentFeeController::class);
 Route::apiResource('unite-enseignements', UniteEnseignementController::class);
