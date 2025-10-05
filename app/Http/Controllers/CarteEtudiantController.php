@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\CarteEtudiant;
+use App\Models\Inscription;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Log;
 
 
 class CarteEtudiantController extends Controller
@@ -25,17 +27,41 @@ class CarteEtudiantController extends Controller
     }
     public function store(Request $request)
     {
-        // Code to create a new student card
-        $validatedData = $request->validate([
-            'numero_carte' => 'required|unique:carte_etudiants,numero_carte',
+         try {
+        // On récupère l'inscription correspondante pour générer le numéro de carte
+        $request->validate([
             'inscriptions_id' => 'required|exists:inscriptions,id',
-            'status' => 'required|string|in:active,inactive,lost,expired',
+            // 'status' => 'required|string',
         ]);
-        // dd($validatedData);
-        // Create the student card
-        $carteEtudiant = CarteEtudiant::create($validatedData);
+        // dd($request->all());
+
+        // Récupérer l'inscription
+        $inscription = Inscription::findOrFail($request->inscriptions_id);
+        // dd($inscription);
+        // Générer le numéro de carte : numéro_inscription + deux derniers chiffres de l'année
+        $annee = date('Y'); // année en cours
+        $anneeSuffixe = substr($annee, -2); // derniers chiffres de l'année
+        $numeroCarte = '00'.$inscription->id . '-' . $anneeSuffixe;
+
+        // Vérifier unicité (optionnel, mais conseillé)
+        if (CarteEtudiant::where('numero_carte', $numeroCarte)->exists()) {
+            return response()->json(['message' => 'Le numéro de carte existe déjà'], 422);
+        }
+
+        // Créer la carte
+        $carteEtudiant = CarteEtudiant::create([
+            'numero_carte' => $numeroCarte,
+            'inscriptions_id' => $request->inscriptions_id,
+            'status' => $request->status,
+        ]);
+
         return response()->json($carteEtudiant, 201);
+        } catch (\Exception $e) {
+            Log::error('Erreur Create Etudiant: ' . $e);
+            return response()->json(['error' => 'Validation échouée'], 500);
+        }
     }
+
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([

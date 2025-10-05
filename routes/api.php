@@ -24,8 +24,15 @@ use App\Http\Controllers\{
     LogController,
 };
 use App\Http\Controllers\CarteEtudiantController;
-
+use App\Models\Module;
+use PhpParser\Node\Expr\AssignOp\Mod;
+Route::get('/inscriptions/etudiant/{etudiantId}', [InscriptionController::class, 'getByEtudiant']);
+Route::get('/ues/by-formation/{formationId}', [ModuleController::class, 'getByFormation']);
+Route::get('/ecues/by-ue/{ueId}', [ModuleController::class, 'getByUE']);
+Route::get('/inscriptions/by-formation-semestre/{formationId}/{semestre}', [InscriptionController::class, 'getByFormationAndSemestre']);
+Route::get('/notes/by-ecue/{ecueId}', [NoteController::class, 'getByECUE']);
 Route::apiResource('cartes-etudiants', CarteEtudiantController::class);
+Route::get('/inscriptions/by-formation-semestre', [InscriptionController::class, 'getByFormationAndSemestre']);
 
 
 // Auth routes (ex: login, register) - à sécuriser avec Sanctum

@@ -58,5 +58,10 @@ class NoteController extends Controller
         }
         return response()->json($notes, 201);
     }
+    public function getByECUE($ecueId)
+    {
+        $notes = Note::where('ecueId', $ecueId)->get();
+        return response()->json($notes);
+    }
 }       
 // }

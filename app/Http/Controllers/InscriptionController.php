@@ -9,14 +9,22 @@ class InscriptionController extends Controller
 {
     public function index()
     {
-        // return Inscription::with('etudiant', 'formation', 'academicYear')->get();
-        return response()->json(Inscription::all(), 200);
+        // Charger les relations : etudiant, formation, academicYear
+        $inscriptions = Inscription::with(['etudiant', 'formation', 'academicYear'])->get();
+        return response()->json($inscriptions, 200);
     }
 
     public function show($id)
     {
-        return response()->json(Inscription::findOrFail($id), 200);
-        // return Inscription::with('etudiant', 'formation', 'academicYear')->findOrFail($id);
+
+        $inscription = Inscription::with(['etudiant', 'formation', 'academicYear'])->findOrFail($id);
+        if ($inscription) {
+            return response()->json($inscription, 200);
+        } else {
+            return response()->json(['message' => 'Inscription non trouvée'], 404);
+        }
+        // Si l'inscription est trouvée, retourner les données
+        // return response()->json($inscription, 200);
     }
 
     public function store(Request $request)
@@ -25,8 +33,8 @@ class InscriptionController extends Controller
             $validated = $request->validate([
                 'etudiant_id' => 'required|exists:etudiants,id',
                 'formation_id' => 'required|exists:formations,id',
-                'semestre_courant' => 'required|integer|min:1|max:10',  // Ajout max pour sécurité (ex. : 10 semestres max)
-                'status' => 'nullable|in:en_cours,terminé',  // Nullable + enum strict (remplace string|max)
+                'semestre_courant' => 'required|integer|min:1|max:10',
+                'status' => 'nullable|in:en_cours,terminé',
                 'anneeScolaire_id' => 'required|exists:academic_years,id',
             ], [
                 'etudiant_id.required' => 'L\'ID étudiant est obligatoire.',
@@ -39,8 +47,7 @@ class InscriptionController extends Controller
                 'anneeScolaire_id.required' => 'L\'année scolaire est obligatoire.',
                 'anneeScolaire_id.exists' => 'L\'année scolaire sélectionnée n\'existe pas.',
             ]);
-            // dd($request->all());
-            // return Inscription::create($request->all());
+
             $inscription = Inscription::create($validated);
             return response()->json([
                 'message' => 'Inscription créée avec succès',
@@ -63,5 +70,30 @@ class InscriptionController extends Controller
         $inscription = Inscription::findOrFail($id);
         $inscription->delete();
         return response()->noContent();
+    }
+    public function getByFormationAndSemestre(Request $request)
+    {
+        $formationId = $request->query('formationId');
+        $semestre = $request->query('semestre');
+
+        $inscriptions = Inscription::with(['etudiant', 'formation', 'academicYear'])
+            ->where('formation_id', $formationId)
+            ->where('semestre_courant', $semestre)
+            ->get();
+        // dd($inscriptions);
+        return response()->json($inscriptions);
+    }
+    // public function getByFormationAndSemestre($formationId, $semestre)
+    // {
+    //     $inscriptions = Inscription::with(['etudiant', 'formation'])
+    //         ->where('formation_id', $formationId)
+    //         ->where('semestre', $semestre)
+    //         ->get();
+    //     return response()->json($inscriptions);
+    // }
+    public function getByEtudiant($etudiantId)
+    {
+        $inscription = Inscription::where('etudiant_id', $etudiantId)->with(['etudiant', 'formation', 'academicYear'])->firstOrFail();
+        return response()->json($inscription);
     }
 }

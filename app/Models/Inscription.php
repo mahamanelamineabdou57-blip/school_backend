@@ -24,7 +24,7 @@ class Inscription extends Model
         'anneeScolaire_id',
     ];
 
-    /**
+    /** 
      * 🔗 Relations
      */
 

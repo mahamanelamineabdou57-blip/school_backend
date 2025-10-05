@@ -51,4 +51,8 @@ class ModuleController extends Controller
         $module->delete();
         return response()->noContent();
     }
+    public function getByUE($ueId) {
+        $ecues = Module::where('ue_id', $ueId)->get();
+        return response()->json($ecues);
+    }
 }

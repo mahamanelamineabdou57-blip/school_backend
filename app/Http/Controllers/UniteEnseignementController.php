@@ -57,4 +57,10 @@ class UniteEnseignementController extends Controller
         $ue->delete();
         return response()->json(['message' => 'Unité d\'enseignement supprimée']);
     }
+    public function getByFormation($formationId)
+    {
+        $ues = UniteEnseignement::where('formation_id', $formationId)->get();
+        return response()->json($ues);
+    }
+    
 }

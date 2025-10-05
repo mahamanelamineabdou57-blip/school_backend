@@ -23,7 +23,7 @@ class LogController extends Controller
     }
     public function store(Request $request)
     {
-        
+
         $log = Log::create($request->all());
         return response()->json($log, 201);
     }
