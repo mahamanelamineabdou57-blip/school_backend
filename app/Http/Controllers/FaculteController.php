@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Faculte;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FaculteController extends Controller
 {
@@ -30,9 +31,22 @@ class FaculteController extends Controller
 
     public function update(Request $request, $id)
     {
-        $faculte = Faculte::findOrFail($id);
-        $faculte->update($request->all());
-        return $faculte;
+        try {
+            $validated = $request->validate([
+                'nom' => 'required|string|max:255',
+                'logo' => 'nullable|image|max:2048',
+            ]);
+
+            $faculte = Faculte::findOrFail($id);
+            $faculte->update($validated);
+            return response()->json([
+                'message' => 'Faculté mise à jour avec succès',
+                'data' => $faculte
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Erreur mise à jour faculté: ' . $e->getMessage());
+            return response()->json(['error' => 'Validation échouée', 'message' => $e->getMessage()], 500);
+        }
     }
 
     public function destroy($id)
