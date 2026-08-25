@@ -9,7 +9,7 @@ class EnseignantController extends Controller
 {
     public function index()
     {
-        return Enseignant::with('departement', 'modules', 'user')->get();
+        return Enseignant::with('departement', 'modules', 'user')->latest()->get();
     }
 
     public function show($id)

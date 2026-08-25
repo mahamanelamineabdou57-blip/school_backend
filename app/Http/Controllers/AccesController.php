@@ -11,7 +11,7 @@ class AccesController extends Controller
     public function index()
     {
         // return Departement::with('faculte', 'sections', 'enseignants')->get();
-        return response()->json(Acces::all());
+        return response()->json(Acces::latest()->get());
     }
 
     public function show($id)

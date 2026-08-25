@@ -10,7 +10,7 @@ class DepartementController extends Controller
     public function index()
     {
         // return Departement::with('faculte', 'sections', 'enseignants')->get();
-         return response()->json(Departement::with('facultes', 'sections')->get());
+         return response()->json(Departement::with('facultes', 'sections')->latest()->get());
     }
 
     public function show($id)

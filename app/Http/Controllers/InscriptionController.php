@@ -10,7 +10,7 @@ class InscriptionController extends Controller
     public function index()
     {
         // Charger les relations : etudiant, formation, academicYear
-        $inscriptions = Inscription::with(['etudiant', 'formation', 'academicYear'])->get();
+        $inscriptions = Inscription::with(['etudiant', 'formation', 'academicYear'])->latest()->get();
         return response()->json($inscriptions, 200);
     }
 

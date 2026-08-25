@@ -10,7 +10,7 @@ class FormationController extends Controller
     public function index()
     {
         // return Departement::with('faculte', 'sections', 'enseignants')->get();
-        return response()->json(Formation::get());
+        return response()->json(Formation::latest()->get());
     }
 
     public function show($id)

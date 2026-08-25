@@ -14,7 +14,7 @@ class CarteEtudiantController extends Controller
     // Controller methods will go here
     public function index()
     {
-        $carteEtudiant = CarteEtudiant::with('inscription')->get();
+        $carteEtudiant = CarteEtudiant::with('inscription')->latest()->get();
         return response()->json($carteEtudiant);
     }
     public function show($id)

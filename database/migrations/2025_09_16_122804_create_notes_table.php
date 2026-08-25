@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
 
-            $table->decimal('noteSessionNormale', 5, 2)->nullable(); // Note entre 0 et 
+            $table->decimal('noteSessionNormale', 5, 2)->nullable(); // Note entre 0 et
             $table->decimal('noteRattrapage', 5, 2)->nullable(); // Note entre 0 et 20
             $table->foreignId('inscriptionId')->constrained('inscriptions')->cascadeOnDelete();
             $table->foreignId('ecueId')->constrained('modules')->cascadeOnDelete();
+            $table->unique(['inscriptionId', 'ecueId']);
             $table->timestamps();
             $table->softDeletes();
         });

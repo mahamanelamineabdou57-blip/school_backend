@@ -10,7 +10,7 @@ class FaculteController extends Controller
 {
     public function index()
     {
-        return response()->json(Faculte::all());
+        return response()->json(Faculte::latest()->get());
     }
 
     public function show($id)

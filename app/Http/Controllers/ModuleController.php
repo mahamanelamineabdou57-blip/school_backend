@@ -10,7 +10,7 @@ class ModuleController extends Controller
 {
     public function index()
     {
-        return response()->json(Module::with('unite_enseignements')->get());
+        return response()->json(Module::with('unite_enseignements')->latest()->get());
     }
 
     public function show($id)

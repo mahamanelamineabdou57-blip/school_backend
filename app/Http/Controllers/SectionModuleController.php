@@ -9,7 +9,7 @@ class SectionModuleController extends Controller
 {
     public function index()
     {
-        return SectionModule::with('section', 'module')->get();
+        return SectionModule::with('section', 'module')->latest()->get();
     }
 
     public function show($id)

@@ -9,7 +9,7 @@ class FeeController extends Controller
 {
     public function index()
     {
-        return Fee::with('inscription')->get();
+        return Fee::with('inscription')->latest()->get();
     }
 
     public function show($id)

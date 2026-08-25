@@ -9,7 +9,7 @@ class StudentFeeController extends Controller
 {
     public function index()
     {
-        return StudentFee::with('etudiant', 'fee')->get();
+        return StudentFee::with('etudiant', 'fee')->latest()->get();
     }
 
     public function show($id)

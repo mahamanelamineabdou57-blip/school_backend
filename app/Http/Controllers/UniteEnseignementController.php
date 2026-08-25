@@ -10,7 +10,7 @@ class UniteEnseignementController extends Controller
     // Lister tous les UE
     public function index()
     {
-        $ues = UniteEnseignement::with('formation')->get();
+        $ues = UniteEnseignement::with('formation')->latest()->get();
         return response()->json($ues);
     }
 
@@ -60,7 +60,10 @@ class UniteEnseignementController extends Controller
     public function getByFormation($formationId)
     {
         $ues = UniteEnseignement::where('formation_id', $formationId)->get();
+            Log::error('formationId: ' . $formationId);
+            Log::error('ues: ' . $ues);
+
         return response()->json($ues);
     }
-    
+
 }

@@ -16,7 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
           // Le placer avant tout le reste pour être sûr qu’il s’exécute
         $middleware->prepend(HandleCors::class);
         //
-    })
+    }) 
     ->withExceptions(function (Exceptions $exceptions): void {
         //
     })->create();

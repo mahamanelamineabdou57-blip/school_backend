@@ -11,7 +11,7 @@ class EtudiantController extends Controller
 {
     public function index()
     {
-        return response()->json(Etudiant::all());
+        return response()->json(Etudiant::latest()->get());
         //
         // return Etudiant::all();
     }

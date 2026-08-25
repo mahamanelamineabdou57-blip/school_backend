@@ -9,7 +9,15 @@ class NoteController extends Controller
 {
     public function index()
     {
-        return response()->json(Note::with('inscriptions')->get());
+        return response()->json(Note::with('inscriptions')->latest()->get());
+
+        // $query = Note::query();
+
+        // if ($request->has('ecueId')) {
+        //     $query->where('ecueId', $request->ecueId);
+        // }
+
+        // return response()->json($query->get());
     }
 
     public function show($id)
@@ -43,7 +51,7 @@ class NoteController extends Controller
         $note->delete();
         return response()->noContent();
     }
-    // Nouvelle méthode pour le stockage en batch
+
     public function batchStore(Request $request)
     {
         $validated = $request->validate([
@@ -52,16 +60,28 @@ class NoteController extends Controller
             '*.inscriptionId' => 'required|exists:inscriptions,id',
             '*.ecueId' => 'required|exists:modules,id',
         ]);
+
         $notes = [];
-        foreach ($request->all() as $noteData) {
-            $notes[] = Note::create($noteData);
+
+        foreach ($validated as $noteData) {
+            $notes[] = Note::updateOrCreate(
+                [
+                    'inscriptionId' => $noteData['inscriptionId'],
+                    'ecueId' => $noteData['ecueId'],
+                ],
+                [
+                    'noteSessionNormale' => $noteData['noteSessionNormale'],
+                    'noteRattrapage' => $noteData['noteRattrapage'],
+                ]
+            );
         }
-        return response()->json($notes, 201);
+
+        return response()->json($notes, 200);
     }
+
     public function getByECUE($ecueId)
     {
-        $notes = Note::where('ecueId', $ecueId)->get();
+        $notes = Note::where('ecueId', $ecueId)->latest()->get();
         return response()->json($notes);
     }
-}       
-// }
+}

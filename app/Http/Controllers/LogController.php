@@ -10,7 +10,7 @@ class LogController extends Controller
     //
     public function index()
     {
-        return response()->json(Log::all(), 200);
+        return response()->json(Log::latest()->get(), 200);
     }
     public function show($id)
     {

@@ -10,7 +10,7 @@ class IntefaceController extends Controller
     public function index()
     {
         // return Departement::with('faculte', 'sections', 'enseignants')->get();
-        return response()->json(Inteface::all());
+        return response()->json(Inteface::latest()->get());
     }
 
     public function show($id)
