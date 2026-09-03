@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\UniteEnseignement;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rule;
 
 class UniteEnseignementController extends Controller
 {
@@ -17,6 +19,7 @@ class UniteEnseignementController extends Controller
     // Créer un UE
     public function store(Request $request)
     {
+        Log::info('Creating UE with data: ' . json_encode($request->all()));
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
             'code' => 'required|string|max:50|unique:unite_enseignements,code',
@@ -35,21 +38,58 @@ class UniteEnseignementController extends Controller
     }
 
     // Mettre à jour un UE
+    // public function update(Request $request, $id)
+    // {
+    //     try {
+    //         //code...
+    //         $ue = UniteEnseignement::findOrFail($id);
+    //     $validated = $request->validate([
+    //         'nom' => 'required|string|max:255',
+    //         'code' => 'required|string|max:50|unique:unite_enseignements,code',
+    //         // 'credits' => 'required|integer|min:0',
+    //         'formation_id' => 'required|exists:sections,id',
+    //     ]);
+
+    //     $ue->update($validated);
+    //     return response()->json($ue);
+    //     } catch (\Throwable $th) {
+    //       Log::error('Error updating UE: ' . $th->getMessage());
+    //       return response()->json(['error' => 'Une erreur est survenue lors de la mise à jour de l\'UE.'], 500);
+    //     }
+    // }
+ 
+
     public function update(Request $request, $id)
     {
-        $ue = UniteEnseignement::findOrFail($id);
+        try {
+            $ue = UniteEnseignement::findOrFail($id);
 
-        $validated = $request->validate([
-            'nom' => 'required|string|max:255',
-            'code' => 'required|string|max:50|unique:unite_enseignements,code',
-            'credits' => 'required|integer|min:0',
-            'formation_id' => 'required|exists:sections,id',
-        ]);
+            $validated = $request->validate([
+                'nom' => 'required|string|max:255',
 
-        $ue->update($validated);
-        return response()->json($ue);
+                'code' => [
+                    'required',
+                    'string',
+                    'max:50',
+                    Rule::unique('unite_enseignements', 'code')->ignore($ue->id),
+                ],
+
+                'formation_id' => 'required|exists:formations,id',
+                
+            ]);
+
+            $ue->update($validated);
+
+            return response()->json($ue);
+        } catch (\Throwable $th) {
+            Log::error('Error updating UE: ' . $th->getMessage());
+
+            return response()->json([
+                'error' => "Une erreur est survenue lors de la mise à jour de l'UE.",
+                'message' => $th->getMessage(),
+            ], 500);
+        }
     }
-
     // Supprimer un UE
     public function destroy($id)
     {
@@ -60,10 +100,9 @@ class UniteEnseignementController extends Controller
     public function getByFormation($formationId)
     {
         $ues = UniteEnseignement::where('formation_id', $formationId)->get();
-            Log::error('formationId: ' . $formationId);
-            Log::error('ues: ' . $ues);
+        Log::error('formationId: ' . $formationId);
+        Log::error('ues: ' . $ues);
 
         return response()->json($ues);
     }
-
 }

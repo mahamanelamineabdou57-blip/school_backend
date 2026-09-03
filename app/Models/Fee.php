@@ -10,20 +10,8 @@ class Fee extends Model
 {
     use HasFactory;
     use SoftDeletes;
-//     export interface Paiement {
-//   id: number;
-//   inscriptionId: number;
-//   type: 'inscription' | 'formation';
-//   montant: number;
-//   datePaiement?: Date;
-//   statut: 'non payé' | 'partiellement payé' | 'payé';
-//   createdAt?: Date;
-//   updatedAt?: Date;
-//   deletedAt?: Date | null;
-// }
- 
 
-    protected $dates = ['deleted_at'];
+    protected $casts = ['deleted_at' => 'datetime'];
     protected $fillable = [
         'inscriptionId',
         'type',
@@ -35,5 +23,10 @@ class Fee extends Model
     public function inscription()
     {
         return $this->belongsTo(Inscription::class, 'inscriptionId');
+    }
+
+    public function studentFees()
+    {
+        return $this->hasMany(StudentFee::class, 'fee_id');
     }
 }

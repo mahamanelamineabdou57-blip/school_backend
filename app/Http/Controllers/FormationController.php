@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Formation; 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class FormationController extends Controller
 {
@@ -19,14 +20,16 @@ class FormationController extends Controller
     }
     public function store(Request $request)
     {
+        Log::info('Creating formation with data: ' . json_encode($request->all()));
         $request->validate([
             'nom' => 'required|string|max:255',
             'code' => 'required|string|max:255',
             'duree' => 'required|integer',
-            'conditions' => 'required|string',
+            'conditions' => 'nullable|string',
             'departement_id' => 'required|exists:departements,id',
         ]);
 
+        
         return Formation::create($request->all());
     }
     public function update(Request $request, $id)

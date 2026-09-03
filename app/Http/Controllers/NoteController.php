@@ -7,24 +7,29 @@ use Illuminate\Http\Request;
 
 class NoteController extends Controller
 {
+
     public function index()
     {
-        return response()->json(Note::with('inscriptions')->latest()->get());
-
-        // $query = Note::query();
-
-        // if ($request->has('ecueId')) {
-        //     $query->where('ecueId', $request->ecueId);
-        // }
-
-        // return response()->json($query->get());
+        return response()->json(
+            Note::with([
+                'inscriptions.etudiant',
+                'ecue',
+                'ecue.unite_enseignements',
+            ])
+                ->latest()
+                ->get()
+        );
     }
 
     public function show($id)
     {
-        return Note::with('inscriptions')->findOrFail($id);
+        return response()->json(
+            Note::with([
+                'inscriptions.etudiant',
+                'ecue.unite_enseignements',
+            ])->findOrFail($id)
+        );
     }
-
     public function store(Request $request)
     {
         $request->validate([

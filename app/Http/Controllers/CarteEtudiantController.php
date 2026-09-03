@@ -14,7 +14,7 @@ class CarteEtudiantController extends Controller
     // Controller methods will go here
     public function index()
     {
-        $carteEtudiant = CarteEtudiant::with('inscription')->latest()->get();
+        $carteEtudiant = CarteEtudiant::with('inscription.etudiant')->latest()->get();
         return response()->json($carteEtudiant);
     }
     public function show($id)
@@ -25,43 +25,81 @@ class CarteEtudiantController extends Controller
         }
         return response()->json($carteEtudiant);
     }
+    // public function store(Request $request)
+    // {
+    //      try {
+    //     // On récupère l'inscription correspondante pour générer le numéro de carte
+    //     $request->validate([
+    //         'inscriptions_id' => 'required|exists:inscriptions,id',
+    //         // 'status' => 'required|string',
+    //     ]);
+    //     Log::info('Creating Carte Etudiant with data: ' . json_encode($request->all()));
+    //     // dd($request->all());
+
+    //     // Récupérer l'inscription
+    //     $inscription = Inscription::findOrFail($request->inscriptions_id);
+    //     // dd($inscription);
+    //     // Générer le numéro de carte : numéro_inscription + deux derniers chiffres de l'année
+    //     $annee = date('Y'); // année en cours
+    //     $anneeSuffixe = substr($annee, -2); // derniers chiffres de l'année
+    //     $numeroCarte = '00'.$inscription->id . '-' . $anneeSuffixe;
+
+    //     // Vérifier unicité (optionnel, mais conseillé)
+    //     if (CarteEtudiant::where('numero_carte', $numeroCarte)->exists()) {
+    //         return response()->json(['message' => 'Le numéro de carte existe déjà'], 422);
+    //     }
+
+    //     // Créer la carte
+    //     $carteEtudiant = CarteEtudiant::create([
+    //         'numero_carte' => $numeroCarte,
+    //         'inscriptions_id' => $request->inscriptions_id,
+    //         'status' => $request->status,
+    //     ]);
+
+    //     return response()->json($carteEtudiant, 201);
+    //     } catch (\Exception $e) {
+    //         Log::error('Erreur Create Etudiant: ' . $e);
+    //         return response()->json(['error' => 'Validation échouée'], 500);
+    //     }
+    // }
     public function store(Request $request)
     {
-         try {
-        // On récupère l'inscription correspondante pour générer le numéro de carte
-        $request->validate([
-            'inscriptions_id' => 'required|exists:inscriptions,id',
-            // 'status' => 'required|string',
-        ]);
-        // dd($request->all());
-
-        // Récupérer l'inscription
-        $inscription = Inscription::findOrFail($request->inscriptions_id);
-        // dd($inscription);
-        // Générer le numéro de carte : numéro_inscription + deux derniers chiffres de l'année
-        $annee = date('Y'); // année en cours
-        $anneeSuffixe = substr($annee, -2); // derniers chiffres de l'année
-        $numeroCarte = '00'.$inscription->id . '-' . $anneeSuffixe;
-
-        // Vérifier unicité (optionnel, mais conseillé)
-        if (CarteEtudiant::where('numero_carte', $numeroCarte)->exists()) {
-            return response()->json(['message' => 'Le numéro de carte existe déjà'], 422);
-        }
-
-        // Créer la carte
-        $carteEtudiant = CarteEtudiant::create([
-            'numero_carte' => $numeroCarte,
-            'inscriptions_id' => $request->inscriptions_id,
-            'status' => $request->status,
+        $validated = $request->validate([
+            'inscriptions_id'  => 'required|exists:inscriptions,id',
+            'date_emission'    => 'required|date',
+            'date_expiration'  => 'required|date|after:date_emission',
+            'status'           => 'sometimes|string|in:active,inactive,lost,expired',
         ]);
 
-        return response()->json($carteEtudiant, 201);
-        } catch (\Exception $e) {
-            Log::error('Erreur Create Etudiant: ' . $e);
-            return response()->json(['error' => 'Validation échouée'], 500);
+        Log::info('Creating Carte Etudiant with data: ' . json_encode($validated));
+
+        try {
+            
+            $inscription = Inscription::findOrFail($validated['inscriptions_id']);
+
+            // Générer le numéro de carte : préfixe + id inscription + suffixe année
+            $annee = date('Y');
+            $anneeSuffixe = substr($annee, -2);
+            $numeroCarte = '00' . $inscription->id . '-' . $anneeSuffixe;
+
+            if (CarteEtudiant::where('numero_carte', $numeroCarte)->exists()) {
+                return response()->json(['message' => 'Le numéro de carte existe déjà'], 422);
+            }
+
+            $carteEtudiant = CarteEtudiant::create([
+                'numero_carte'     => $numeroCarte,
+                'inscriptions_id'  => $validated['inscriptions_id'],
+                'date_emission'    => $validated['date_emission'],
+                'date_expiration'  => $validated['date_expiration'],
+                'status'           => $validated['status'] ?? 'active',
+            ]);
+
+            return response()->json($carteEtudiant, 201);
+        } catch (\Throwable $e) {
+            Log::error('Erreur Create Carte Etudiant: ' . $e->getMessage());
+            return response()->json(['error' => 'Erreur lors de la création de la carte', 'message' => $e->getMessage()], 500);
         }
     }
-
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([

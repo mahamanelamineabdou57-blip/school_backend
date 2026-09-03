@@ -69,4 +69,17 @@ class Etudiant extends Model
     {
         return $this->hasMany(Note::class);
     }
+
+    // Un étudiant a plusieurs paiements de frais
+    public function studentFees()
+    {
+        return $this->hasMany(StudentFee::class);
+    }
+
+    // Un étudiant a un historique de paiements
+    public function paymentHistories()
+    {
+        return $this->hasMany(PaymentHistory::class);
+    }
+    
 }

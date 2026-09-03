@@ -12,7 +12,7 @@ use App\Http\Controllers\{
     InscriptionController,
     NoteController,
     TraceMessageController,
-    FeeController,
+    FeeTypeController,
     StudentFeeController,
     UniteEnseignementController,
     AcademicYearController,
@@ -22,10 +22,11 @@ use App\Http\Controllers\{
     IntefaceController,
     RoleController,
     LogController,
+    PaymentHistoryController,
+    PaymentReminderController,
 };
 use App\Http\Controllers\CarteEtudiantController;
-use App\Models\Module;
-use PhpParser\Node\Expr\AssignOp\Mod;
+
 Route::get('/inscriptions/etudiant/{etudiantId}', [InscriptionController::class, 'getByEtudiant']);
 Route::get('/ues/by-formation/{formationId}', [ModuleController::class, 'getByFormation']);
 Route::get('/ecues/by-ue/{ueId}', [ModuleController::class, 'getByUE']);
@@ -50,10 +51,25 @@ Route::apiResource('section-modules', SectionModuleController::class);
 Route::apiResource('inscriptions', InscriptionController::class);
 Route::apiResource('notes', NoteController::class);
 Route::apiResource('academic-years', AcademicYearController::class);
-Route::apiResource('fees', FeeController::class);
-Route::apiResource('student-fees', StudentFeeController::class);
 Route::apiResource('unite-enseignements', UniteEnseignementController::class);
 Route::apiResource('logs', LogController::class);
 Route::apiResource('roles', RoleController::class);
+
+// ── Paiements ──────────────────────────────────────────────────────
+// "fees" (ancien catalogue/facture ambigu) est remplacé par "fee-types" (catalogue)
+// + "student-fees" (facture réelle par étudiant). Voir migration de refonte.
+Route::apiResource('fee-types', FeeTypeController::class);
+Route::apiResource('student-fees', StudentFeeController::class);
+
+// ── Historique de paiements ──────────────────────────────────────
+Route::get('/payment-history/{etudiantId}',      [PaymentHistoryController::class, 'byEtudiant']);
+Route::get('/payment-history/{etudiantId}/pdf',  [PaymentHistoryController::class, 'exportPdf']);
+Route::post('/payment-history',                  [PaymentHistoryController::class, 'store']);
+
+// ── Relances / Impayés ───────────────────────────────────────────
+Route::get('/reminders',                         [PaymentReminderController::class, 'index']);
+Route::get('/reminders/unpaid',                  [PaymentReminderController::class, 'unpaid']);
+Route::post('/reminders/send/{etudiantId}',      [PaymentReminderController::class, 'send']);
+
 Route::post('/logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 Route::post('/auth/verify-code', [AuthController::class, 'verifyCode']);
